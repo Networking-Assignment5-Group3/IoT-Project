@@ -60,9 +60,9 @@ class Publisher():
         # Set broker cloud url
         mqttBroker = "mqtt.eclipseprojects.io"
         
-        # Set up as mqtt client with the name "Temperature_Inside_Sensor" 
+        # Set up as mqtt client with the name "Sin_Wave_Inside_Sensor" 
         # this is the name of the client publishing to the broker
-        client = mqtt.Client("Temperature_Inside_Sensor")
+        client = mqtt.Client("Sin_Wave_Inside_Sensor")
         
         while True:
             # Connect client to the broker
