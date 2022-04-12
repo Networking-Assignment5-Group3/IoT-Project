@@ -10,7 +10,7 @@ def on_message(client, userdata, message):
     msg = json.loads(message.payload.decode("utf-8"))
 
     # prints the msg dictionary values in coresponding keys (timestamp, temp) which we sent from publisher
-    print("Received Message: " + str(msg["temp"]) + "\nTimestamp: " + str(msg["timestamp"]) + "\n")
+    print("Received Message: " + str(msg["y-value"]) + "\nTimestamp: " + str(msg["timestamp"]) + "\n")
 
 # Set broker cloud url
 mqttBroker ="mqtt.eclipseprojects.io"
@@ -18,7 +18,7 @@ mqttBroker ="mqtt.eclipseprojects.io"
 # set topics as tuple pairs with ("topic name", "Quality of Service value") 
 # keep the QoS value to 0 for any new topics
 # adding new topic is simple as topics = [("TEMP", 0), ("New_Topic", 0)]
-topics = [("TEMP", 0)]
+topics = [("AMPLITUDE", 0)]
 
 # Set up a new mqtt client and naming it "Smartphone" 
 # can be named anything 
