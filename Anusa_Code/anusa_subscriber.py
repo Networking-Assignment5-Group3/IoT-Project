@@ -25,7 +25,7 @@ mqttBroker ="mqtt.eclipseprojects.io"
 # set topics as tuple pairs with ("topic name", "Quality of Service value") 
 # keep the QoS value to 0 for any new topics
 # adding new topic is simple as topics = [("TEMP", 0), ("New_Topic", 0)]
-topics = [("TEMP", 0)]
+topics = [("Stock_Details", 0)]
 
 # Set up a new mqtt client and naming it "Smartphone" 
 # can be named anything 

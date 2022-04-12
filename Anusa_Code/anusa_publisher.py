@@ -82,23 +82,42 @@ class Publisher():
             # Connect client to the broker
             client.connect(mqttBroker)
             
-            # Generate a random value from a stock
-            self.generate_value()
+            # Create a random float between 20.0 - 25.0
+            randomValue = random.uniform(20.0, 25.0)
             
-            # Store current timestamp and the value in a dictionary
-            self.json_package()
+            message = {
+                "timestamp": str(datetime.now()),
+                "NOK-Stock": randomValue
+                }
             
             # Convert the dictionary to a json
+            jsonedMessage = json.dumps(message)
+
+            # Generate a random value from a stock
+            self.generate_value()
+      
+            # Store current timestamp and the value in a dictionary
+            self.json_package()
+      
+            # Convert the dictionary to a json
             self.save_json()
+            # publish the json message to the "TEMP" topic which subscribers listen to 
+            # temp short for temperature
+            client.publish("Stock_Details", jsonedMessage)
+
+            # prints out the json file being sent to the broker and the topic its going to
+            print("Published to broker: " + jsonedMessage +
+            "\nTopic:" + " Stock_Details\n")
+      
             
             # publish the json message to the "TEMP" topic which subscribers listen to 
             # temp short for temperature
-            client.publish("Stock Details", self.jsonData)
+            # client.publish("Stock Details", self.jsonData)
         
         
             # prints out the json file being sent to the broker and the topic its going to
-            print("Published to broker: " + self.jsonData +
-                    "\nTopic:" + " Stock\n")
+            # print("Published to broker: " + self.jsonData +
+            #         "\nTopic:" + " Stock\n")
             
             # disconnect client from broker
             client.disconnect()
