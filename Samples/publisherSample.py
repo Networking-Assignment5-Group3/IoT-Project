@@ -23,7 +23,7 @@ while True:
     # Store current timestamp and the value in a dictionary
     message = {
         "timestamp": str(datetime.now()),
-        "temp": randomValue
+        "y-value": randomValue
     }
 
     # Convert the dictionary to a json
@@ -42,4 +42,3 @@ while True:
 
     # rest for 2 seconds and repeat due to infinite while loop
     time.sleep(2)
-

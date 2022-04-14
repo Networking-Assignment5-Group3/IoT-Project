@@ -15,20 +15,20 @@ from datetime import datetime
 
 
 class Publisher():
-    def generate_value(self) -> int:
+    def generate_value(self):
         '''
         Generates a random value and a timestamp for that value.
         Values generated are based on a sin wave pattern.
         
         Returns
         -------
-        int
+        None
         
         '''
         time = np.arange(0,2*math.pi,math.pi/10)
         amplitude = np.sin(time)
         self.value = random.choice(amplitude)
-        self.timestamp = datetime.now()
+        self.timestamp = datetime.now().strftime('%M:%S.%f')[:-4]
     
     
     def json_package(self):
@@ -47,7 +47,7 @@ class Publisher():
     
     def save_json(self):
         '''
-        Dump the json object into a .json file.
+        Dump the dict object into a json object.
 
         Returns
         -------
@@ -56,13 +56,14 @@ class Publisher():
         '''
         self.jsonData = json.dumps(self.data,default=str)
     
+    
     def publish(self):
         # Set broker cloud url
         mqttBroker = "mqtt.eclipseprojects.io"
         
-        # Set up as mqtt client with the name "Sin_Wave_Inside_Sensor" 
+        # Set up as mqtt client with the name "Sin_Wave" 
         # this is the name of the client publishing to the broker
-        client = mqtt.Client("Sin_Wave_Inside_Sensor")
+        client = mqtt.Client("Sin_Wave")
         
         while True:
             # Connect client to the broker
@@ -77,8 +78,7 @@ class Publisher():
             # Convert the dictionary to a json
             self.save_json()
             
-            # publish the json message to the "TEMP" topic which subscribers listen to 
-            # temp short for temperature
+            # publish the json message to the "AMPLITUDE" topic which subscribers listen to 
             client.publish("AMPLITUDE", self.jsonData)
         
         
