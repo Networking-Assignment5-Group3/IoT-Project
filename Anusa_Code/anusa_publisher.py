@@ -6,12 +6,10 @@ Created on Tue Apr 12 22:03:30 2022
 """
 
 import numpy as np
-import math
 import random
 import json
 import paho.mqtt.client as mqtt
 import time
-import matplotlib.pyplot as plt
 from datetime import datetime
 
     
@@ -37,11 +35,11 @@ class Publisher():
             return i + (coeff * delta)
 
         series = growth(np.array(range(10)))
-        series = np.array([oscillation(i) for i in series])
+        array_series = np.array([oscillation(i) for i in series])
         
         
-        stock_series = ((series - series.mean()) / (series.max() - series.min())) + 1
-        self.series = random.choice(stock_series)
+        stock_series = ((array_series - array_series.mean()) / (array_series.max() - array_series.min())) + 1
+        self.stock_series = random.choice(stock_series)
         self.timestamp = datetime.now()
         
        
@@ -55,7 +53,7 @@ class Publisher():
 
         '''
         self.data = {
-                "NOK-Stock" : self.series, "timestamp" : self.timestamp
+                "NOK-Stock" : self.stock_series, "timestamp" : self.timestamp
             }
     
     
@@ -74,7 +72,7 @@ class Publisher():
         # Set broker cloud url
         mqttBroker = "mqtt.eclipseprojects.io"
         
-        # Set up as mqtt client with the name "Sin_Wave_Inside_Sensor" 
+        # Set up as mqtt client with the name "Stock_Details" 
         # this is the name of the client publishing to the broker
         client = mqtt.Client("Stock_Details")
         
@@ -83,7 +81,7 @@ class Publisher():
             client.connect(mqttBroker)
             
             # Create a random float between 20.0 - 25.0
-            randomValue = random.uniform(20.0, 25.0)
+            randomValue = random.uniform(10.0, 15.0)
             
             message = {
                 "timestamp": str(datetime.now()),
@@ -101,24 +99,14 @@ class Publisher():
       
             # Convert the dictionary to a json
             self.save_json()
+            
             # publish the json message to the "TEMP" topic which subscribers listen to 
-            # temp short for temperature
             client.publish("Stock_Details", jsonedMessage)
 
             # prints out the json file being sent to the broker and the topic its going to
             print("Published to broker: " + jsonedMessage +
             "\nTopic:" + " Stock_Details\n")
-      
-            
-            # publish the json message to the "TEMP" topic which subscribers listen to 
-            # temp short for temperature
-            # client.publish("Stock Details", self.jsonData)
-        
-        
-            # prints out the json file being sent to the broker and the topic its going to
-            # print("Published to broker: " + self.jsonData +
-            #         "\nTopic:" + " Stock\n")
-            
+              
             # disconnect client from broker
             client.disconnect()
             
