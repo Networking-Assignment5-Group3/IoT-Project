@@ -42,4 +42,3 @@ while True:
 
     # rest for 2 seconds and repeat due to infinite while loop
     time.sleep(2)
-
