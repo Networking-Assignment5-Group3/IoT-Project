@@ -31,6 +31,11 @@ class Subscriber():
         # clear axis
         self.ax.clear()
 
+        # once values length reaches 5 then remove first element of values and timestamps
+        if (len(self.values) == 6):
+            self.values.pop(0)
+            self.timestamps.pop(0)
+
         # plot axis
         self.ax.plot(self.timestamps, self.values)  
 
@@ -38,10 +43,7 @@ class Subscriber():
         plt.xlabel("Time")
         plt.ylabel("y-value")
 
-        # once values length reaches 5 then remove first element of values and timestamps
-        if (len(self.values) == 5):
-            self.values.pop(0)
-            self.timestamps.pop(0)
+        
 
     def on_message(self, client, userdata, message):
         '''
