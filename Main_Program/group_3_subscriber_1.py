@@ -9,8 +9,7 @@ import paho.mqtt.client as mqtt
 import time
 import json
 import matplotlib.pyplot as plt
-
-# from group_3_publisher_1 import Publisher
+import matplotlib.animation as animation
 
 class Subscriber():
     def __init__(self):
@@ -20,11 +19,30 @@ class Subscriber():
         Returns
         -------
         None.
-
         '''
+
         self.values = []
         self.timestamps = []
-    
+        self.fig, self.ax = plt.subplots()
+
+    # called by ani variable in self.post()
+    # removes last element in values and timestamps once length of values reaches 5
+    def animate(self, i):
+        # clear axis
+        self.ax.clear()
+
+        # plot axis
+        self.ax.plot(self.timestamps, self.values)  
+
+        # label axis
+        plt.xlabel("Time")
+        plt.ylabel("y-value")
+
+        # once values length reaches 5 then remove first element of values and timestamps
+        if (len(self.values) == 5):
+            self.values.pop(0)
+            self.timestamps.pop(0)
+
     def on_message(self, client, userdata, message):
         '''
         to-do
@@ -41,8 +59,8 @@ class Subscriber():
         Returns
         -------
         None.
-
         '''
+
         # converts the message from a mqtt object to the json object we sent
         # and converts the json object back to a dictionary in one line
         msg = json.loads(message.payload.decode("utf-8"))
@@ -53,6 +71,7 @@ class Subscriber():
         # prints the msg dictionary values in coresponding keys (timestamp, temp) which we sent from publisher
         print("Received Message: " + str(msg["y-value"]) + "\nTimestamp: " + str(msg["timestamp"]) + "\n")
 
+        
     
     def post(self):
         '''
@@ -61,8 +80,8 @@ class Subscriber():
         Returns
         -------
         None.
-
         '''
+
         # Set broker cloud url
         mqttBroker ="mqtt.eclipseprojects.io"
         
@@ -89,33 +108,25 @@ class Subscriber():
         # callback function for the on_message method when a message was received from broker 
         # a message will be received once the publisher sends a message to the broker
         client.on_message = self.on_message 
+
+        # calls the animate method to add each variables to the plot and display it
+        ani = animation.FuncAnimation(self.fig, self.animate, interval = 1000)
+        plt.show()
         
         #loop will continue until this timer is done then goes to the next call at line 42 to end the program
         time.sleep(30)
         
-        
-        # Plot list of values
-        fig, ax = plt.subplots()
-        plt.xlabel("Time")
-        plt.ylabel("y-value")
-        plt.plot(self.timestamps, self.values)
-        every_nth = 4
-        for n, label in enumerate(ax.xaxis.get_ticklabels()):
-            if n % every_nth != 0:
-                label.set_visible(False)
-        
-        plt.show()
-        
         # client is finished and the program ends once the time.sleep() is finished
         client.loop_stop()
         
-        
+
 '''
 TESTING PURPOSES
 '''
+
 def main():
     s = Subscriber()
     s.post()
-
+    
 if __name__ == "__main__":
     main()
