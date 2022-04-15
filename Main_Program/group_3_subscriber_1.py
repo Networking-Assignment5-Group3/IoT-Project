@@ -46,7 +46,7 @@ class Subscriber():
         # converts the message from a mqtt object to the json object we sent
         # and converts the json object back to a dictionary in one line
         msg = json.loads(message.payload.decode("utf-8"))
-        if (message.topic == "TEMP"):
+        if (message.topic == "AMPLITUDE"):
             self.values.append(msg["y-value"])
             self.timestamps.append(msg["timestamp"])
     
