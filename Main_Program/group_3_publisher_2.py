@@ -27,7 +27,7 @@ class Publisher():
         shape, scale = 2.0, 2.0
         oscillations = np.random.gamma(shape,scale,1)
         self.value = random.choice(oscillations)
-        self.timestamp = datetime.now()
+        self.timestamp = datetime.now().strftime('%M:%S.%f')[:-4]
     
     
     def json_package(self):
