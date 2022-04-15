@@ -37,9 +37,7 @@ class Publisher():
         series = growth(np.array(range(10)))
         array_series = np.array([oscillation(i) for i in series])
         
-        
-        stock_series = ((array_series - array_series.mean()) / (array_series.max() - array_series.min())) + 1
-        self.stock_series = random.choice(stock_series)
+        self.stock_series = random.choice(array_series)
         self.timestamp = datetime.now()
         
        
@@ -80,20 +78,20 @@ class Publisher():
             # Connect client to the broker
             client.connect(mqttBroker)
             
-            # Create a random float between 20.0 - 25.0
-            randomValue = random.uniform(10.0, 15.0)
+            # Generate a random value from a stock
+            self.generate_value()
+           
             
             message = {
                 "timestamp": str(datetime.now()),
-                "NOK-Stock": randomValue
+                "NOK-Stock": str(self.stock_series)
                 }
+            
             
             # Convert the dictionary to a json
             jsonedMessage = json.dumps(message)
 
-            # Generate a random value from a stock
-            self.generate_value()
-      
+          
             # Store current timestamp and the value in a dictionary
             self.json_package()
       
