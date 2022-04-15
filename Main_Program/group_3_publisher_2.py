@@ -5,14 +5,7 @@ Created on Tue Apr 12 12:34:06 2022
 @author: Nithya Sheena
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Apr 10 15:38:30 2022
-@author: joshua
-"""
-
 import numpy as np
-import math
 import random
 import json
 import paho.mqtt.client as mqtt
