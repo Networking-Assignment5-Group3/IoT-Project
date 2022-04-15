@@ -104,6 +104,8 @@ class Subscriber():
             if n % every_nth != 0:
                 label.set_visible(False)
         
+        plt.show()
+        
         # client is finished and the program ends once the time.sleep() is finished
         client.loop_stop()
         
