@@ -66,12 +66,12 @@ class Subscriber():
         # converts the message from a mqtt object to the json object we sent
         # and converts the json object back to a dictionary in one line
         msg = json.loads(message.payload.decode("utf-8"))
-        if (message.topic == "AMPLITUDE"):
-            self.values.append(msg["y-value"])
+        if (message.topic == "Stock_Details"):
+            self.values.append(msg["NOK-Stock"])
             self.timestamps.append(msg["timestamp"])
     
         # prints the msg dictionary values in coresponding keys (timestamp, temp) which we sent from publisher
-        print("Received Message: " + str(msg["y-value"]) + "\nTimestamp: " + str(msg["timestamp"]) + "\n")
+        print("Received Message: " + str(msg["NOK-Stock"]) + "\nTimestamp: " + str(msg["timestamp"]) + "\n")
 
         
     
@@ -90,7 +90,7 @@ class Subscriber():
         # set topics as tuple pairs with ("topic name", "Quality of Service value") 
         # keep the QoS value to 0 for any new topics
         # adding new topic is simple as topics = [("TEMP", 0), ("New_Topic", 0)]
-        topics = [("AMPLITUDE", 0)]
+        topics = [("Stock_Details", 0)]
         
         # Set up a new mqtt client and naming it "Smartphone" 
         # can be named anything 
